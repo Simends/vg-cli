@@ -5,7 +5,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-SCRAPE_INTERVAL = 10
+SCRAPE_INTERVAL_IN_SECONDS = 10
 
 printed_articles = []
 
@@ -84,7 +84,7 @@ def createArticlesList():
         publication_date = getPublicationDate(tracking_data, url)
         if article_list != "":
             article_list += "\n"
-        article_list += publication_date + " " + title + " " + url
+        article_list += publication_date + " " + title
         printed_articles.append(id)
     return article_list
     
@@ -99,7 +99,7 @@ def main(_):
         article_list = createArticlesList()
         if article_list != "":
             print(sortStringList(article_list))
-        time.sleep(SCRAPE_INTERVAL)
+        time.sleep(SCRAPE_INTERVAL_IN_SECONDS)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
