@@ -33,18 +33,32 @@ def getPublicationDate(tracking_data):
     except TypeError:
         return "                   "
 
+def createArticlesList():
+    articles = getArticles()
+    article_list = ""
+    for article in articles:
+        tracking_data = getTrackingData(article)
+        id = getId(tracking_data)
+        if id in printed_articles:
+            continue
+        publication_date = getPublicationDate(tracking_data)
+        title = getTitle(tracking_data)
+        if article_list != "":
+            article_list += "\n"
+        article_list += publication_date + " " + title
+        printed_articles.append(id)
+    return article_list
+    
+def sortStringList(list):
+    splitted_list = list.split('\n')
+    splitted_list.sort()
+    return '\n'.join(splitted_list)
+
 def main(_):
     while True:
-        articles = getArticles()
-        for article in articles:
-            tracking_data = getTrackingData(article)
-            id = getId(tracking_data)
-            if id in printed_articles:
-                continue
-            publication_date = getPublicationDate(tracking_data)
-            title = getTitle(tracking_data)
-            print(publication_date + " " + title)
-            printed_articles.append(id)
+        article_list = createArticlesList()
+        if article_list != "":
+            print(sortStringList(article_list))
         time.sleep(SCRAPE_INTERVAL)
 
 if __name__ == "__main__":
