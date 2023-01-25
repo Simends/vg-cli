@@ -39,8 +39,8 @@ def main(_):
     for article in articles:
         tracking_data = getTrackingData(article)
         id = getId(tracking_data)
-        # if id in printed_articles:
-        #     continue
+        if id in printed_articles:
+            continue
         publication_date = getPublicationDate(tracking_data)
         title = getTitle(tracking_data)
         table.append([title, publication_date])
