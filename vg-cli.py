@@ -50,11 +50,11 @@ def getPublicationDateFromFrontPage(tracking_data):
     except TypeError:
         return ""
 
-def getPublicationDate(tracking_data, article_page_url):
+def getPublicationDate(tracking_data, url):
     publication_date = getPublicationDateFromFrontPage(tracking_data)
     if publication_date != "":
         return trimDateString(publication_date)
-    article_page = getArticlePage(article_page_url)
+    article_page = getArticlePage(url)
     publication_date = getPublicationDateFromArticlePage(article_page)
     if publication_date != "":
         return trimDateString(publication_date)
@@ -69,11 +69,11 @@ def createArticlesList():
         if id in printed_articles:
             continue
         title = getTitle(tracking_data)
-        article_page_url = getUrl(article)
-        publication_date = getPublicationDate(tracking_data, article_page_url)
+        url = getUrl(article)
+        publication_date = getPublicationDate(tracking_data, url)
         if article_list != "":
             article_list += "\n"
-        article_list += publication_date + " " + title
+        article_list += publication_date + " " + title + " " + url
         printed_articles.append(id)
     return article_list
     
