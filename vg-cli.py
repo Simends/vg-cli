@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import time
 import json
 import requests
 from bs4 import BeautifulSoup
@@ -32,17 +33,19 @@ def getPublicationDate(tracking_data):
     except TypeError:
         return "                   "
 
-def main():
-    articles = getArticles()
-    for article in articles:
-        tracking_data = getTrackingData(article)
-        id = getId(tracking_data)
-        if id in printed_articles:
-            continue
-        publication_date = getPublicationDate(tracking_data)
-        title = getTitle(tracking_data)
-        print(publication_date + " " + title)
-        printed_articles.append(id)
+def main(_):
+    while True:
+        articles = getArticles()
+        for article in articles:
+            tracking_data = getTrackingData(article)
+            id = getId(tracking_data)
+            if id in printed_articles:
+                continue
+            publication_date = getPublicationDate(tracking_data)
+            title = getTitle(tracking_data)
+            print(publication_date + " " + title)
+            printed_articles.append(id)
+        time.sleep(SCRAPE_INTERVAL)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
