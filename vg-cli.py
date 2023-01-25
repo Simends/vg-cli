@@ -3,6 +3,7 @@ import sys
 import json
 import requests
 from bs4 import BeautifulSoup
+from tabulate import tabulate
 
 SCRAPE_INTERVAL = 10
 
@@ -30,10 +31,11 @@ def getPublicationDate(tracking_data):
         publication_date = tracking_data['changes']['firstPublished']
         return publication_date.replace("T", " ").replace("Z", "")
     except TypeError:
-        return "                   "
+        return ""
 
-def main():
+def main(_):
     articles = getArticles()
+    table = []
     for article in articles:
         tracking_data = getTrackingData(article)
         id = getId(tracking_data)
@@ -41,8 +43,9 @@ def main():
         #     continue
         publication_date = getPublicationDate(tracking_data)
         title = getTitle(tracking_data)
-        print(publication_date + " " + title)
+        table.append([title, publication_date])
         printed_articles.append(id)
+    print(tabulate(table, headers=["Tittel", "Publiserings tidspunkt"], tablefmt="simple"))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
